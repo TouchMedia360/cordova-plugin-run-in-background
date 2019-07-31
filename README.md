@@ -120,6 +120,14 @@ cordova.plugins.backgroundMode.wakeUp();
 cordova.plugins.backgroundMode.unlock();
 ```
 
+### Request to disable battery optimizations
+Starting in Android 8, apps can be put to sleep to conserve battery. When this happens (usually after 5 minutes or so), the background task is killed. This will cause things like MQTT connections to break.
+This method will show a permission prompt for the user (only if the app hasn't been granted permission) to ignore the optimization.
+
+```js
+cordova.plugins.backgroundMode.disableWebViewOptimizations();
+```
+
 ### Notification
 To indicate that the app is executing tasks in background and being paused would disrupt the user, the plug-in has to create a notification while in background - like a download progress bar.
 
