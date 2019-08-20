@@ -189,6 +189,7 @@ public class ForegroundService extends Service {
         String text     = settings.optString("text", NOTIFICATION_TEXT);
         boolean bigText = settings.optBoolean("bigText", false);
         String subText = settings.optString("subText", "");
+        String visibility = settings.optString("visibility", "");
 
         Context context = getApplicationContext();
         String pkgName  = context.getPackageName();
@@ -222,6 +223,10 @@ public class ForegroundService extends Service {
         if (bigText || text.contains("\n")) {
             notification.setStyle(
                     new NotificationCompat.BigTextStyle().bigText(text));
+        }
+
+        if (!visibility.equals("")) {
+            notification.setVisibility(getVisibility(visibility));
         }
 
         setColor(notification, settings);
@@ -309,6 +314,23 @@ public class ForegroundService extends Service {
         return res.getIdentifier(icon, type, pkgName);
     }
 
+    /**
+     * Get the visibility constant from a string.
+     *
+     * @param visibility one of 'public', 'private', 'secret'
+     *
+     * @return The visibility constant if a match is found, 'private' otherwise
+     */
+    private int getVisibility (String visibility)
+    {
+        if (visibility.equals("public")) {
+            return Notification.VISIBILITY_PUBLIC;
+        } else if (visibility.equals("secret")) {
+            return Notification.VISIBILITY_SECRET;
+        } else {
+            return Notification.VISIBILITY_PRIVATE;
+        }
+    }
     /**
      * Set notification color if its supported by the SDK.
      *

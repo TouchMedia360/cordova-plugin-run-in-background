@@ -149,7 +149,8 @@ cordova.plugins.backgroundMode.setDefaults({
     allowClose: Boolean, // add a "Close" action to the notification
     closeIcon: 'power', // An icon shown for the close action
     closeTitle: 'Close', // The text for the close action
-    showWhen: Boolean //(Default: true) Show the time since the notification was created
+    showWhen: Boolean, //(Default: true) Show the time since the notification was created
+    visibility: String, // Android only: one of 'private' (default), 'public' or 'secret' (see https://developer.android.com/reference/android/app/Notification.Builder.html#setVisibility(int))
 })
 ```
 
@@ -174,7 +175,7 @@ Various APIs like playing media or tracking GPS position in background might not
 
 ```js
 cordova.plugins.backgroundMode.on('activate', function() {
-   cordova.plugins.backgroundMode.disableWebViewOptimizations(); 
+   cordova.plugins.backgroundMode.disableWebViewOptimizations();
 });
 ```
 

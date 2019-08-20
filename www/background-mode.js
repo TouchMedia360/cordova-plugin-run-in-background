@@ -424,7 +424,8 @@ exports._defaults = {
     allowClose:         false,
     closeIcon:          'power',
     closeTitle:         'Close',
-    showWhen:           true
+    showWhen:           true,
+    visibility:         undefined
 };
 
 /**
