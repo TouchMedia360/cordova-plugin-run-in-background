@@ -55,6 +55,7 @@ import static android.content.pm.PackageManager.MATCH_DEFAULT_ONLY;
 import static android.os.Build.VERSION.SDK_INT;
 import static android.os.Build.VERSION_CODES.M;
 import static android.provider.Settings.ACTION_REQUEST_IGNORE_BATTERY_OPTIMIZATIONS;
+import static android.provider.Settings.ACTION_IGNORE_BATTERY_OPTIMIZATION_SETTINGS;
 import static android.view.WindowManager.LayoutParams.FLAG_ALLOW_LOCK_WHILE_SCREEN_ON;
 import static android.view.WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD;
 import static android.view.WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED;
@@ -89,6 +90,12 @@ public class BackgroundModeExt extends CordovaPlugin {
         {
             case "battery":
                 disableBatteryOptimizations();
+                break;
+            case "batterysettings":
+                openBatterySettings();
+                break;
+            case "optimizationstatus":
+                isIgnoringBatteryOptimizations(callback);
                 break;
             case "webview":
                 disableWebViewOptimizations();
@@ -207,6 +214,39 @@ public class BackgroundModeExt extends CordovaPlugin {
         intent.setData(Uri.parse("package:" + pkgName));
 
         cordova.getActivity().startActivity(intent);
+    }
+
+    /**
+     * Opens the Battery Optimization settings screen
+     */
+    private void openBatterySettings()
+    {
+        if (SDK_INT < M)
+            return;
+
+        Activity activity = cordova.getActivity();
+        Intent intent = new Intent(ACTION_IGNORE_BATTERY_OPTIMIZATION_SETTINGS);
+
+        cordova.getActivity().startActivity(intent);
+    }
+
+    /**
+     * Opens the Battery Optimization settings screen
+     *
+     * @param callback The callback to invoke.
+     */
+    private void isIgnoringBatteryOptimizations(CallbackContext callback)
+    {
+        if (SDK_INT < M)
+            return;
+
+        Activity activity  = cordova.getActivity();
+        String pkgName     = activity.getPackageName();
+        PowerManager pm    = (PowerManager)getService(POWER_SERVICE);
+        boolean isIgnoring = pm.isIgnoringBatteryOptimizations(pkgName);
+        PluginResult res   = new PluginResult(Status.OK, isIgnoring);
+
+        callback.sendPluginResult(res);
     }
 
     /**

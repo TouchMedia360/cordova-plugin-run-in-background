@@ -122,10 +122,33 @@ cordova.plugins.backgroundMode.unlock();
 
 ### Request to disable battery optimizations
 Starting in Android 8, apps can be put to sleep to conserve battery. When this happens (usually after 5 minutes or so), the background task is killed. This will cause things like MQTT connections to break.
+
 This method will show a permission prompt for the user (only if the app hasn't been granted permission) to ignore the optimization.
 
 ```js
-cordova.plugins.backgroundMode.disableWebViewOptimizations();
+cordova.plugins.backgroundMode.disableBatteryOptimizations();
+```
+
+You can also open the battery optimization settings menu directly, and get the user to set it manually. This may be a better option for devices which may ignore the prompt above.
+
+```js
+cordova.plugins.backgroundMode.openBatteryOptimizationsSettings();
+```
+
+To check if battery optimizations are disabled for the app:
+
+```js
+cordova.plugins.backgroundMode.isIgnoringBatteryOptimizations(function(isIgnoring) {
+    ...
+})
+```
+
+Additionally, you may find that your JS code begins to run less frequently, or not at all while in the background. This can be due to the webview slowing down its execution due to being in the background. The `disableWebViewOptimizations` function can prevent that, but it's important that it is run _after_ the app goes to the background.
+
+```js
+cordova.plugins.backgroundMode.on('activate', function() {
+    cordova.plugins.backgroundMode.disableWebViewOptimizations();
+});
 ```
 
 ### Notification

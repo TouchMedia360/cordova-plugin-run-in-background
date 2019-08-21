@@ -178,6 +178,38 @@ exports.disableBatteryOptimizations = function()
 };
 
 /**
+ * Opens the system settings screen for battery optimization, allowing the user to
+ * manually change the optimization settings.
+ *
+ * @return [ Void ]
+ */
+exports.openBatteryOptimizationsSettings = function()
+{
+    if (this._isAndroid)
+    {
+        cordova.exec(null, null, 'BackgroundModeExt', 'batterysettings', []);
+    }
+};
+
+/**
+ * Opens the system settings screen for battery optimization, allowing the user to
+ * manually change the optimization settings.
+ *
+ * @return [ Void ]
+ */
+exports.isIgnoringBatteryOptimizations = function(callback)
+{
+    if (this._isAndroid)
+    {
+        cordova.exec(callback, null, 'BackgroundModeExt', 'optimizationstatus', []);
+    }
+    else
+    {
+        callback(true);
+    }
+};
+
+/**
  * Opens the system settings dialog where the user can tweak or turn off any
  * custom app start settings added by the manufacturer if available.
  *
