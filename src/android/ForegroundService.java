@@ -196,11 +196,16 @@ public class ForegroundService extends Service {
         Intent intent   = context.getPackageManager()
                 .getLaunchIntentForPackage(pkgName);
 
+        int smallIcon = getIconResId(settings);
+        if (smallIcon == 0) { //If no icon at all was found, fall back to the app's icon
+            smallIcon = context.getApplicationInfo().icon;
+        }
+
         NotificationCompat.Builder notification = new NotificationCompat.Builder(context, CHANNEL_ID)
                 .setContentTitle(title)
                 .setContentText(text)
                 .setOngoing(true)
-                .setSmallIcon(getIconResId(settings))
+                .setSmallIcon(smallIcon)
                 .setShowWhen(settings.optBoolean("showWhen", true));
 
         if (!subText.equals("")) {
