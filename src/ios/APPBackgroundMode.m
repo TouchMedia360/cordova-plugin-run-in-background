@@ -174,6 +174,9 @@ NSString* const kAPPBackgroundEventDeactivate = @"deactivate";
     // even another app starts playing sound
     [session setCategory:AVAudioSessionCategoryPlayback
                    error:NULL];
+    // Prevent sound/music from stopping when opening the app. Also prevents embedded videos from pausing when unmuted.
+    [session setCategory:AVAudioSessionCategoryAmbient
+    error:NULL];
 
     // Active the audio session
     [session setActive:YES error:NULL];
