@@ -79,7 +79,9 @@ cordova.plugins.backgroundMode.un('EVENT', function);
 ## Android specifics
 
 ### Transit between application states
-Android allows to programmatically move from foreground to background or vice versa.
+Android allows to programmatically move from foreground to background or vice versa. 
+
+Note: starting with Android 10, you must request the "Draw on Top" permission from the user or the call to `moveToForeground` will silently fail. You can request it with `cordova.plugins.backgroundMode.requestForegroundPermission();`. This permission isn't necessary for `moveToBackground`
 
 ```js
 cordova.plugins.backgroundMode.moveToBackground();

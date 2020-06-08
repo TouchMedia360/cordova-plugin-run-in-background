@@ -34,6 +34,7 @@ import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Build;
 import android.os.PowerManager;
+import android.provider.Settings;
 import android.view.View;
 
 import org.apache.cordova.CallbackContext;
@@ -108,6 +109,9 @@ public class BackgroundModeExt extends CordovaPlugin {
                 break;
             case "foreground":
                 moveToForeground();
+                break;
+            case "requestTopPermissions":
+                requestTopPermissions();
                 break;
             case "tasklist":
                 excludeFromTaskList();
@@ -247,6 +251,20 @@ public class BackgroundModeExt extends CordovaPlugin {
         PluginResult res   = new PluginResult(Status.OK, isIgnoring);
 
         callback.sendPluginResult(res);
+    }
+
+     private void requestTopPermissions() {
+        if (SDK_INT >= M) {
+
+            Activity activity = cordova.getActivity();
+            if (Settings.canDrawOverlays(activity.getApplicationContext())) {
+                return;
+            }
+
+            String pkgName    = activity.getPackageName();
+            Intent intent = new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION, Uri.parse("package:" + pkgName));
+            activity.startActivity(intent);
+        }
     }
 
     /**

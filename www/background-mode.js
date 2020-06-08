@@ -253,6 +253,17 @@ exports.moveToForeground = function()
 };
 
 /**
+ * Requests permission to "draw on top" which is necessary for the "moveToForeground" method in Android 10+
+ *
+ * @return [ Void ]
+ */
+exports.requestForegroundPermission = function() {
+    if (this._isAndroid) {
+        cordova.exec(null, null, 'BackgroundModeExt', 'requestTopPermissions', []);
+    }
+};
+
+/**
  * Exclude the app from the recent tasks list (Android only).
  *
  * @return [ Void ]
