@@ -33,7 +33,7 @@ import android.os.Build;
 import android.os.IBinder;
 import android.os.PowerManager;
 import org.json.JSONObject;
-import android.support.v4.app.NotificationCompat;
+import androidx.core.app.NotificationCompat;
 
 import static android.os.PowerManager.PARTIAL_WAKE_LOCK;
 
